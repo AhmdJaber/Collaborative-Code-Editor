@@ -1,16 +1,39 @@
-HELP.md
+# =========================
+# Project build outputs
+# =========================
+backend/target/
+frontend/dist/
+build/
+
+# =========================
+# Node / Frontend (Vite/React)
+# =========================
+frontend/node_modules/
+frontend/.vite/
+frontend/dist-ssr/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Maven / Java
+# =========================
 target/
-src/main/resources/editors
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-# macOS
-.DS_Store
+.mvn/wrapper/maven-wrapper.properties
 
-# Serialized files
-*.ser
+# =========================
+# IDE files
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
 
-### STS ###
+.vscode/
+
 .apt_generated
 .classpath
 .factorypath
@@ -19,21 +42,28 @@ src/main/resources/editors
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# =========================
+# OS files
+# =========================
+.DS_Store
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# =========================
+# Editor / runtime generated files (your project-specific)
+# =========================
+src/main/resources/editors/
+**/editors/
 
-### VS Code ###
-.vscode/
+# Serialized files
+*.ser
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Optional: environment files
+# =========================
+.env
+.env.local
+.env.*.local
