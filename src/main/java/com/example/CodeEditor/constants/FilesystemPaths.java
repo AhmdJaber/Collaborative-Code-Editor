@@ -4,5 +4,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FilesystemPaths {
-    public final String storageServicePath = ".\\src\\main\\resources\\editors";
+    public final String storageServicePath = "src/main/resources/editors";
 }

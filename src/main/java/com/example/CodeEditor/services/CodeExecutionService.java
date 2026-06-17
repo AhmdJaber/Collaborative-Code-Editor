@@ -32,7 +32,7 @@ public class CodeExecutionService {
 
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "docker", "run", "--rm", "-v", tempDirectory + ":/app",
-                    "openjdk:17-jdk-slim", "sh", "-c",
+                    "eclipse-temurin:17", "sh", "-c",
                     "javac /app/" + className + ".java && java -cp /app " + className
             );
 

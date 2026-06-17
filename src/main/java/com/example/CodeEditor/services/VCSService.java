@@ -6,10 +6,11 @@ import com.example.CodeEditor.model.component.files.Project;
 import com.example.CodeEditor.repository.ProjectRepository;
 import com.example.CodeEditor.services.storage.FileStorageService;
 import com.example.CodeEditor.services.storage.VCSStorageService;
-import com.example.CodeEditor.vcs.ChangeHolder;
+import com.example.CodeEditor.model.component.ChangeHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,7 +18,7 @@ import java.util.*;
 @Service
 public class VCSService {
     @Autowired
-    private VCSStorageService storageService;
+    private VCSStorageService vcsStorageService;
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -39,19 +40,19 @@ public class VCSService {
 
     public void initVCS(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        storageService.init(project);
+        vcsStorageService.initVCS(project);
     }
 
     public void deleteVCS(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow();
-        storageService.delete(project);
+        vcsStorageService.deleteVCS(project);
     }
 
     public Map<String, List<String>> status(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        String branchName = storageService.getCurrentBranch(project);
-        Map<Long, ChangeHolder> untrackedChanges = storageService.readChanges(project, branchName);
-        Map<Long, ChangeHolder> trackedChanges = storageService.readTracked(project, branchName);
+        String branchName = vcsStorageService.getCurrentBranch(project);
+        Map<Long, ChangeHolder> untrackedChanges = vcsStorageService.readChanges(project, branchName);
+        Map<Long, ChangeHolder> trackedChanges = vcsStorageService.readTracked(project, branchName);
         Map<String, List<String>> status = new HashMap<>();
         status.put("untracked", new ArrayList<>());
         status.put("tracked", new ArrayList<>());
@@ -66,31 +67,37 @@ public class VCSService {
         return status;
     }
 
+    @Transactional
     public List<String> add(Long projectId, List<String> files) throws IOException {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        String branchName = storageService.getCurrentBranch(project);
+        String branchName = vcsStorageService.getCurrentBranch(project);
         Map<Long, ChangeHolder> changes;
         if (files.contains(".")) {
-            changes = storageService.trackAllChanges(project, branchName);
+            changes = vcsStorageService.trackAllChanges(project, branchName);
         } else {
             List<Long> filesIds = new ArrayList<>();
             for(String filePath : files){
                 Long fileId = fileStorageService.getFileIdByPath(project, filePath);
                 filesIds.add(fileId);
             }
-            changes = storageService.trackChanges(project, branchName, filesIds);
+            changes = vcsStorageService.trackChanges(project, branchName, filesIds);
         }
-        List<String> changesNames = new ArrayList<>();
-        for(Long change: changes.keySet()){
-            changesNames.add(fileItemService.getFileById(change).getName());
+        if (files.contains(".")) {
+            List<String> changesNames = new ArrayList<>();
+            for (Long change : changes.keySet()) {
+                changesNames.add(fileItemService.getFileById(change).getName());
+            }
+            return changesNames;
+        } else {
+            return files;
         }
-        return changesNames;
     }
 
+    @Transactional
     public String log(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        String branchName = storageService.getCurrentBranch(project);
-        List<String> logs = storageService.log(project, branchName);
+        String branchName = vcsStorageService.getCurrentBranch(project);
+        List<String> logs = vcsStorageService.log(project, branchName);
         StringBuilder log = new StringBuilder();
         for (String currentLog : logs) {
             log.append(currentLog).append("\n\n");
@@ -98,11 +105,12 @@ public class VCSService {
         return log.toString();
     }
 
+    @Transactional
     public List<String> commit(Long projectId, Client client, String message) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        String branchName = storageService.getCurrentBranch(project);
-        String currentCommit = storageService.getCurrentCommit(project, branchName);
-        Map<Long, ChangeHolder> trackedChanges = storageService.commitTracked(project, branchName, client, message, currentCommit);
+        String branchName = vcsStorageService.getCurrentBranch(project);
+        String currentCommit = vcsStorageService.getCurrentCommit(project, branchName);
+        Map<Long, ChangeHolder> trackedChanges = vcsStorageService.commitTracked(project, branchName, client, message, currentCommit);
         List<String> changesNames = new ArrayList<>();
         for(Long change: trackedChanges.keySet()){
             changesNames.add(fileItemService.getFileById(change).getName());
@@ -110,6 +118,7 @@ public class VCSService {
         return changesNames;
     }
 
+    @Transactional
     public ResponseEntity<List<String>> commit(Long projectId, String message, String reqToken) {
         String senderEmail = jwtService.extractUsername(reqToken.replace("Bearer ", ""));
         Client client = clientService.getClientByEmail(senderEmail);
@@ -120,18 +129,18 @@ public class VCSService {
 
     public void revert(Long projectId, String commitId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        String branchName = storageService.getCurrentBranch(project);
-        storageService.revert(project, branchName, commitId);
+        String branchName = vcsStorageService.getCurrentBranch(project);
+        vcsStorageService.revert(project, branchName, commitId);
     }
 
     public boolean checkVCSProject(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow();
-        return storageService.checkVCSProject(project);
+        return vcsStorageService.checkVCSProject(project);
     }
 
     public void fork(Client client, Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        storageService.fork(project, client);
+        vcsStorageService.fork(project, client);
     }
 
     public ResponseEntity<String> fork(Long projectId, String reqToken) {
@@ -146,7 +155,7 @@ public class VCSService {
     }
 
     public void fork(Client client, Project project) {
-        storageService.fork(project, client);
+        vcsStorageService.fork(project, client);
     }
 
     public ResponseEntity<String> fork(Map<String, String> body, String reqToken) {
@@ -165,25 +174,28 @@ public class VCSService {
 
     public List<String> allBranches(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        return storageService.allBranches(project);
+        return vcsStorageService.allBranches(project);
     }
 
+    @Transactional
     public void createBranch(Long projectId, String branchName) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        String currentBranchName = storageService.getCurrentBranch(project);
+        String currentBranchName = vcsStorageService.getCurrentBranch(project);
         branchName = branchName.substring(1, branchName.length() - 1);
-        storageService.createBranch(project, branchName, currentBranchName);
+        vcsStorageService.createBranch(project, branchName, currentBranchName);
     }
 
+    @Transactional
     public void deleteBranch(Long projectId, String branchName) {
         Project project = projectRepository.findById(projectId).orElseThrow();
         branchName = branchName.substring(1, branchName.length() - 1);
-        storageService.deleteBranch(project, branchName);
+        vcsStorageService.deleteBranch(project, branchName);
     }
 
+    @Transactional
     public void checkout(Long projectId, String branchName) {
         Project project = projectRepository.findById(projectId).orElseThrow();
         branchName = branchName.substring(1, branchName.length() - 1);
-        storageService.checkout(project, branchName);
+        vcsStorageService.checkout(project, branchName);
     }
 }

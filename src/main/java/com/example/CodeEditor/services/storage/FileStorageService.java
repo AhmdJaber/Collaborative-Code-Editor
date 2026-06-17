@@ -27,7 +27,7 @@ public class FileStorageService {
     }
 
     private Long getIdFromEditorDir(Map<Long, FileNode> editorDir, String[] files, int currentFile, Long currentId){
-        for(FileItem fileItem: editorDir.get(currentId).getFileItems()){
+        for(FileItem fileItem: editorDir.get(currentId).getChildren()){
             if (fileItem.getName().equals(files[currentFile])){
                 if (currentFile == files.length - 1) {
                     return fileItem.getId();

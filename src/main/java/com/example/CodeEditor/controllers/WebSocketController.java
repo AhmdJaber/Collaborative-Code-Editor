@@ -15,10 +15,10 @@ public class WebSocketController {
 
     @MessageMapping("/editor/change")
     public void handleCodeChange(Map<String, Object> body)  {
-        long projectId = Long.parseLong(body.get("projectId").toString());
+        long snippetId = Long.parseLong(body.get("snippetId").toString());
         Map<String, String> resBody = new HashMap<>();
         resBody.put("change", body.get("change").toString());
         resBody.put("token", body.get("token").toString());
-        messagingTemplate.convertAndSend("/topic/project/" + projectId, resBody);
+        messagingTemplate.convertAndSend("/topic/snippet/" + snippetId, resBody);
     }
 }

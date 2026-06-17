@@ -1,7 +1,7 @@
 package com.example.CodeEditor.controllers;
 
 import com.example.CodeEditor.model.clients.Client;
-import com.example.CodeEditor.model.component.ProjectStructure;
+import com.example.CodeEditor.model.component.files.ProjectStructure;
 import com.example.CodeEditor.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +30,7 @@ public class ClientController {
     @PostMapping("/share_project_edit/{email}/{ownerId}/{projectId}")
     public ResponseEntity<?> shareProjectWithEdit(@PathVariable String email, @PathVariable Long ownerId, @PathVariable Long projectId, @RequestHeader("Authorization") String reqToken) {
         clientService.shareProjectWithEdit(email, ownerId, projectId, reqToken);
+        System.out.println("here !!!!!!!!");
         return ResponseEntity.ok("Project shared with editor");
     }
 

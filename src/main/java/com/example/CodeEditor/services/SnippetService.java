@@ -3,7 +3,7 @@ package com.example.CodeEditor.services;
 import com.example.CodeEditor.enums.Change;
 import com.example.CodeEditor.model.clients.Client;
 import com.example.CodeEditor.model.component.Comment;
-import com.example.CodeEditor.model.component.ProjectStructure;
+import com.example.CodeEditor.model.component.files.ProjectStructure;
 import com.example.CodeEditor.model.component.files.FileItem;
 import com.example.CodeEditor.model.component.files.Project;
 import com.example.CodeEditor.model.component.files.Snippet;
@@ -13,6 +13,7 @@ import com.example.CodeEditor.services.storage.SnippetStorageService;
 import com.example.CodeEditor.services.storage.VCSStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,12 +49,13 @@ public class SnippetService {
     @Autowired
     private CodeExecutionService codeExecutionService;
 
+    @Transactional
     public Long createSnippet(Long editorId, Snippet snippet, Long projectId) throws IOException {
         Client editor = clientService.getClientById(editorId);
         Long snippetId = fileItemService.createFile(new FileItem(snippet.getName(), snippet.getParentId())).getId();
         snippet.setId(snippetId);
         ProjectStructure projectStructure = projectStorageService.loadProjectStructure(editor, projectId);
-        projectStructure.getTree().get(snippet.getParentId()).getFileItems().add(snippet);
+        projectStructure.getTree().get(snippet.getParentId()).getChildren().add(snippet);
         projectStorageService.saveProjectStructure(editor, projectStructure, projectId);
         snippetStorageService.createSnippet(editor, snippet, projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(
@@ -66,10 +68,11 @@ public class SnippetService {
         return snippetId;
     }
 
+    @Transactional
     public void removeSnippet(Long editorId, Snippet snippet, Long projectId) throws IOException {
         Client editor = clientService.getClientById(editorId);
         ProjectStructure projectStructure = projectStorageService.loadProjectStructure(editor, projectId);
-        projectStructure.getTree().get(snippet.getParentId()).getFileItems().remove(snippet);
+        projectStructure.getTree().get(snippet.getParentId()).getChildren().remove(snippet);
         projectStorageService.saveProjectStructure(editor, projectStructure, projectId);
         snippetStorageService.deleteSnippet(editor, snippet, projectId);
         fileItemService.removeFile(snippet.getId());
@@ -82,6 +85,7 @@ public class SnippetService {
         }
     }
 
+    @Transactional
     public void updateSnippet(Long editorId, Long id, String name, String updatedContent, Long projectId) {
         Client editor = clientService.getClientById(editorId);
         snippetStorageService.updateSnippet(editor, id, name, updatedContent, projectId);
@@ -105,6 +109,7 @@ public class SnippetService {
         snippetStorageService.comment(editor, project, snippetId, comment, start, end);
     }
 
+    @Transactional
     public void comment(Long projectId, Long snippetId, Map<String, String> body, String reqToken) {
         String senderEmail = jwtService.extractUsername(reqToken.replace("Bearer ", ""));
         Client editor = clientService.getClientByEmail(senderEmail);

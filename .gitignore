@@ -4,6 +4,11 @@ src/main/resources/editors
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+# macOS
+.DS_Store
+
+# Serialized files
+*.ser
 
 ### STS ###
 .apt_generated

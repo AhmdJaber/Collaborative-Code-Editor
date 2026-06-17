@@ -1,5 +1,6 @@
 package com.example.CodeEditor.security;
 
+import com.example.CodeEditor.model.clients.Client;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,4 +12,5 @@ public class AuthenticationResponse {
     private String accessToken;
     @JsonProperty("refresh_token")
     private String refreshToken;
+    private Client client;
 }

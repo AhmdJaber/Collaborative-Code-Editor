@@ -6,6 +6,7 @@ import com.example.CodeEditor.repository.ProjectRepository;
 import com.example.CodeEditor.services.storage.ProjectStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,12 @@ public class ProjectService {
     private ClientService clientService;
 
 
+    @Transactional
     public Project create(Project project) {
         return projectRepository.save(project);
     }
 
+    @Transactional
     public Project create(Map<String, String> data, String reqToken) {
         String projectName = data.get("projectName");
         String token = reqToken.replace("Bearer ", "");

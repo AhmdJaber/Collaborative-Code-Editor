@@ -2,7 +2,7 @@ package com.example.CodeEditor.services;
 
 import com.example.CodeEditor.enums.Role;
 import com.example.CodeEditor.model.clients.Client;
-import com.example.CodeEditor.model.component.ProjectStructure;
+import com.example.CodeEditor.model.component.files.ProjectStructure;
 import com.example.CodeEditor.model.component.Token;
 import com.example.CodeEditor.model.component.files.Project;
 import com.example.CodeEditor.repository.ClientRepository;

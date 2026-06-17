@@ -58,7 +58,7 @@ public class AuthenticationService {
         String accessToken = jwtService.generateAccessToken(client);
         String refreshToken = jwtService.generateRefreshToken(client);
         saveClientToken(savedClient, accessToken);
-        return new AuthenticationResponse(accessToken, refreshToken);
+        return new AuthenticationResponse(accessToken, refreshToken, client);
     }
 
     private void saveClientToken(Client client, String jwtToken) {
@@ -88,7 +88,7 @@ public class AuthenticationService {
         String refreshToken = jwtService.generateRefreshToken(client);
         deleteAllClientExpiredTokens(client);
         saveClientToken(client, accessToken);
-        return new AuthenticationResponse(accessToken, refreshToken);
+        return new AuthenticationResponse(accessToken, refreshToken, client);
     }
 
     public void deleteAllClientExpiredTokens(Client client){
@@ -113,7 +113,7 @@ public class AuthenticationService {
                 String accessToken = jwtService.generateAccessToken(client);
                 deleteAllClientExpiredTokens(client);
                 saveClientToken(client, accessToken);
-                AuthenticationResponse authResponse = new AuthenticationResponse(accessToken, refreshToken);
+                AuthenticationResponse authResponse = new AuthenticationResponse(accessToken, refreshToken, client);
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
                 return authResponse;
             }
