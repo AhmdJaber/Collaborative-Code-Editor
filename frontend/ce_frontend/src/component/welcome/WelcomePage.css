@@ -1,0 +1,132 @@
+.welcome-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.welcome-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: #282c34;
+    height: 40px;
+    /* Increased height */
+}
+
+.app-name {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.auth-buttons {
+    display: flex;
+}
+
+.auth-button {
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    height: 35px; 
+    border-radius: 6px;
+    background-color: #61dafb;
+    color: #282c34;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.auth-button-name {
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    height: 35px; 
+    border-radius: 6px;
+    background-color: #282c34;
+    color: #61dafb;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect */
+.auth-button:hover {
+    background-color: #282c34; /* Darker shade of blue */
+    color: #61dafb; /* Change text color */
+}
+
+/* Main content styles */
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 80px);
+    /* Account for header height */
+    text-align: center;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.welcome-text {
+    font-size: 48px;
+    margin: 20px 0;
+}
+
+.subtitle-text {
+    font-size: 20px;
+    color: #555;
+}
+
+.start-coding {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pip {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #61dafb;
+    margin-right: 10px;
+}
+
+/* Button styles */
+.start-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #61dafb;
+    color: #282c34;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+}
+.start-button-admin {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #282c34;
+    color: #61dafb;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+/* Hover effect for buttons */
+.start-button:hover {
+    background-color: #282c34;
+    color: #61dafb;
+}
+.start-button-admin:hover {
+    background-color: #61dafb;
+    color: #282c34;
+}

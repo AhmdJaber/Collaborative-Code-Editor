@@ -1,0 +1,12 @@
+.login-box {
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the box */
+    background-color: white; /* Background color of the box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    max-width: 400px; /* Max width for the box */
+    width: 100%; /* Full width */
+    text-align: center; /* Center text */
+    height: 35vh;
+    width: 20vw;
+    background-color: #ffffff; 
+}

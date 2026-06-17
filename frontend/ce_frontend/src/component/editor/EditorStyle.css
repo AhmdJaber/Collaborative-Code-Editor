@@ -1,0 +1,418 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #f4f4f9; 
+    color: #333; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f4f4f9; 
+}
+
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff; 
+    border-bottom: 1px solid #ddd; 
+    color: #333; 
+}
+
+.dropdown {
+    margin-right: 15px;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 6px;
+    background-color: #e1e4e8; 
+    border: 1px solid #ccc; 
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown:hover {
+    background-color: #d0d7de; 
+}
+
+.buttonEditor {
+    margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #282c34; 
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttonEditor:hover {
+    background-color: #4d556a; 
+}
+
+.runButtonEditor {
+    background-color: #22c55e;
+    color: white;
+    font-weight: 700; 
+    transition: all 0.2s ease; 
+}
+
+.runButtonEditor:hover {
+    background-color: white;
+    color: #22c55e;
+}
+
+.projectButton {
+    display: flex; 
+    flex-wrap: wrap; 
+    margin: 5px 0;  
+    padding: 10px 30px;  
+    font-size: 18px;  
+    border: 2px solid #008cba;  
+    border-radius: 10px; 
+    background-color: #e7f1f9; 
+    color: #008cba; 
+    text-align: left;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease;  
+}
+.projectButton:hover {
+    border: 2px solid #134f64;  
+    color: #134f64; 
+    background-color: #e7f1f9; 
+}
+
+
+.editorContainer {
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    gap: 20px; 
+    background-color: #f4f4f9; 
+}
+
+.editor {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd; 
+}
+
+.output {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #ffffff; 
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.textarea {
+    width: 95%;
+    height: calc(100vh - 200px); 
+    resize: none;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9; 
+    color: #333; 
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05); 
+}
+
+.fileManager {
+    width: 250px;
+    background-color: #ffffff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.project_show {
+    width: 250px;
+    background-color: #ffffff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    display: flex;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.project-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.project-list {
+    flex: 1;
+    margin: 10px;
+}
+
+.fileManager h3 {
+    margin: 0 0 10px 0;
+}
+
+.fileManager ul {
+    list-style: none;
+    padding: 0;
+}
+
+.fileManager li {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .editorContainer {
+        flex-direction: column; 
+    }
+
+    .editor, .output {
+        flex: none;
+        width: 100%; 
+    }
+
+    .fileManager {
+        width: 100%; 
+    }
+}
+
+.projectsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #ffffff; 
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd; 
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);   
+}
+
+.projectSection {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.projectSection h2 {
+    margin-top: 0;
+}
+
+.projectSection ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.projectSection li {
+    margin-bottom: 10px;
+}
+
+.projectSection p {
+    color: #888; 
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .projectsContainer {
+        padding: 10px;
+    }
+
+    .projectSection {
+        width: 100%;
+    }
+}
+
+.command-line {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f4f4f9; 
+    color: #d4d4d4; 
+    border-radius: 5px;
+}
+
+.command-line h3 {
+    color: #000000; 
+    margin-bottom: 5px;
+}
+
+.command-input {
+    width: 725px;
+    padding: 12px; /* Increase padding for larger height */
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: monospace;
+    border: 1px solid #555;
+    border-radius: 7px;
+    outline: none;
+    height: 25px; /* Adjust height */
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+}
+.command-output{
+    width: 98%;
+    height: 150px;
+    margin-top: 5px;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: monospace;
+    padding: 10px;
+    border: 1px solid #1e1e1e;
+    border-radius: 7px;
+    resize: none
+}
+
+.command-input::placeholder {
+    color: #808080; 
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);  /* Slightly darker to ensure the editor is fully shadowed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+    backdrop-filter: blur(0.8px);  
+}
+
+.modal {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 325px;
+    max-width: 150%;
+    text-align: center;
+    z-index: 10000; 
+}
+
+.modal h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modal_input{
+    margin-bottom: 20px;
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+.modal select {
+    margin-bottom: 15px;
+    margin-left: 16px;
+    width: 87%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.modal-buttons .submit-button {
+    background-color: #008cba;
+    width: 55%;
+    padding: 10px;
+}
+
+.button:hover {
+    background-color: #007ba7; 
+}
+
+.comments_section {
+    display: flex; 
+    flex-direction: column; 
+    padding: 10px;
+    margin-top: 2%;
+    border-radius: 6px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd; 
+}
+
+.comments-heading {
+    margin-bottom: 10px;  
+    font-size: 24px; 
+    color: #333; 
+}
+
+.comments-buttons {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    margin-top: 5px; 
+}
+
+.comment-button {
+    margin: 5px 0;  
+    padding: 1px 15px;  
+    font-size: 15px;
+    margin: 5px; 
+    border: 2px solid #0282ad;  
+    border-radius: 10px; 
+    background-color: #e7f1f9; 
+    color: #027196; 
+    text-align: left;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease;  
+}
+
+.comment-button:hover {
+    background-color: #cee3f1;
+}
+
+.label {
+    font-weight: bold; /* Optional: Make the label bold */
+}
+
+
+.icon-button {
+    background: white;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Hover effect */
+.icon-button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow on hover */
+    cursor: pointer;
+}
+
+.icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

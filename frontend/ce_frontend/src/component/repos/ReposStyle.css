@@ -1,0 +1,278 @@
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff; 
+    border-bottom: 1px solid #ddd; 
+    color: #333; 
+}
+
+.dropdown {
+    margin-right: 15px;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 6px;
+    background-color: #e1e4e8; 
+    border: 1px solid #ccc; 
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown:hover {
+    background-color: #d0d7de; 
+}
+
+.projectButton {
+    display: block;  
+    margin: 5px 0;  
+    padding: 10px 30px;  
+    font-size: 18px;  
+    border: 2px solid #008cba;  
+    border-radius: 10px; 
+    background-color: #e7f1f9; 
+    color: #008cba; 
+    text-align: left;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease;  
+}
+
+.editorContainer {
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    gap: 20px; 
+    background-color: #f4f4f9; 
+}
+
+.editor {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd; 
+}
+
+.output {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #ffffff; 
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.textarea {
+    width: 95%;
+    height: calc(100vh - 200px); 
+    resize: none;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9; 
+    color: #333; 
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05); 
+}
+
+.project-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.project-list {
+    flex: 1;
+    margin: 10px;
+}
+
+@media (max-width: 768px) {
+    .editorContainer {
+        flex-direction: column; 
+    }
+
+    .editor, .output {
+        flex: none;
+        width: 100%; 
+    }
+
+}
+
+.projectsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #ffffff; 
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd; 
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);   
+}
+
+.projectSection {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.projectSection h2 {
+    margin-top: 0;
+}
+
+.projectSection ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.projectSection li {
+    margin-bottom: 10px;
+}
+
+.projectSection p {
+    color: #888; 
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .projectsContainer {
+        padding: 10px;
+    }
+
+    .projectSection {
+        width: 100%;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);  /* Slightly darker to ensure the editor is fully shadowed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+    backdrop-filter: blur(0.8px);  
+}
+
+.modal {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 325px;
+    max-width: 150%;
+    text-align: center;
+    z-index: 10000; 
+}
+
+.modal h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modal_input_browse{
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+.modal select {
+    margin-bottom: 15px;
+    margin-left: 16px;
+    width: 87%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.modal-buttons .submit-button {
+    background-color: #008cba;
+    width: 55%;
+    padding: 10px;
+}
+
+.button:hover {
+    background-color: #007ba7; 
+}
+
+.comments_section-browse {
+    display: flex; 
+    flex-direction: column; 
+    padding: 10px;
+
+    
+    margin-top: 2%;
+    border-radius: 6px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd;
+}
+
+.project_show_editor {
+    display: flex; 
+    flex-direction: row; 
+    padding: 10px;
+    margin-top: 0%;
+    border-radius: 6px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ddd; 
+}
+
+.comments-heading {
+    margin-bottom: 10px;  
+    font-size: 24px; 
+    color: #333; 
+}
+
+.comments-buttons {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    margin-top: 5px; 
+}
+
+.comment-button {
+    margin: 5px 0;  
+    padding: 1px 15px;  
+    font-size: 15px;
+    margin: 5px; 
+    border: 2px solid #0282ad;  
+    border-radius: 10px; 
+    background-color: #e7f1f9; 
+    color: #027196; 
+    text-align: left;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease;  
+}
+
+.comment-button:hover {
+    background-color: #cee3f1;
+}
+
+.label {
+    font-weight: bold; /* Optional: Make the label bold */
+}
