@@ -14,10 +14,10 @@ public class FileUtil {
     private EncryptionUtil encryptionUtil;
 
     public void createFolder(String folderPath){
-        System.out.println(folderPath);
+        System.out.println("Creating folder: " + folderPath);
         File folder = new File(folderPath);
         if (!folder.exists()) {
-            if (!folder.mkdir()) {
+            if (!folder.mkdirs()) {
                 System.out.println(folderPath);
                 throw new IllegalStateException("Something Went Wrong While Creating The Folder");
             }

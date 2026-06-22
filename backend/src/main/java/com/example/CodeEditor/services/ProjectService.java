@@ -43,6 +43,7 @@ public class ProjectService {
                 .name(projectName)
                 .client(client)
                 .build();
+        System.out.println("Here, No Errors, Everything looks good!");
         Project createdProject = create(project);
         projectStorageService.createProject(client, createdProject);
         return createdProject;
