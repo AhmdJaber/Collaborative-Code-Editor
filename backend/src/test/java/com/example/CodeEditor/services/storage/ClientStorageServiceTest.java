@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ class ClientStorageServiceTest {
     @Mock
     private FileUtil fileUtil;
 
-    @Mock
-    private FilesystemPaths filesystemPaths;
+    @Spy
+    private FilesystemPaths filesystemPaths = new FilesystemPaths();
 
     @InjectMocks
     private ClientStorageService clientStorageService;
@@ -42,7 +43,6 @@ class ClientStorageServiceTest {
         client = new Client();
         clientId = 25L;
         client.setId(clientId);
-        filesystemPaths.storageServicePath = "backend/src/main/resources/editors";
     }
 
     @Test

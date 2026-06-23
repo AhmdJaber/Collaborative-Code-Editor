@@ -44,9 +44,6 @@ class AuthenticationServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private AuthenticationManager authenticationManager;
-
-    @Mock
     private ClientService clientService;
 
     @Mock
