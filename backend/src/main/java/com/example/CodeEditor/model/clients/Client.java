@@ -26,7 +26,7 @@ public class Client implements UserDetails {
     private String name;
 
     @Column(unique = true)
-    private String email; // TODO: Return proper error to the user when there is a duplicate in the provided email
+    private String email;
 
     private String password;
 

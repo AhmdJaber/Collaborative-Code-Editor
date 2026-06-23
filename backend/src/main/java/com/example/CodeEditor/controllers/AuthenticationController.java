@@ -20,7 +20,12 @@ public class AuthenticationController {
 
     @PostMapping("/register/{role}")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterDTO request, @PathVariable String role) {
-        return ResponseEntity.ok(authenticationService.register(request, role));
+        AuthenticationResponse response = authenticationService.register(request, role);
+        if (response.getError() == null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @PostMapping("/authenticate/{role}")

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function EditorLogin() { 
+function EditorLogin() {
     const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -10,6 +10,7 @@ function EditorLogin() {
     const handleHome = () => {
         navigate("/");
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -22,9 +23,11 @@ function EditorLogin() {
                 body: JSON.stringify({ name, email, password }),
             });
 
+            const authResponse = await response.json();
+
             if (response.ok) {
-                const authResponse = await response.json();
-                alert("Registered successfully"); 
+                alert("Registered successfully");
+
                 localStorage.setItem('editorAccessToken', authResponse.access_token);
                 localStorage.setItem('editorRefreshToken', authResponse.refresh_token);
                 localStorage.setItem('email', email);
@@ -32,10 +35,14 @@ function EditorLogin() {
 
                 navigate('/editor/projects');
             } else {
-                console.error('Register failed');
+                // backend error message
+                alert(authResponse.error || "Registration failed");
+                console.error('Register failed:', authResponse.error);
             }
+
         } catch (error) {
-            console.error('Error:', error);
+            alert("Network Connection Error");
+            console.error('Network Error:', error);
         }
     };
 
@@ -50,7 +57,7 @@ function EditorLogin() {
 
             <main className="main-content">
                 <div className="center-text">
-                <h1 className="welcome-text" style={{ fontFamily: "Times New Roman", color: '#353d4c' }}>
+                    <h1 className="welcome-text" style={{ fontFamily: "Times New Roman", color: '#353d4c' }}>
                         TwinCode
                     </h1>
                     <hr />
@@ -91,7 +98,7 @@ function EditorLogin() {
                                     required
                                 />
                             </label>
-                            <br /> 
+                            <br />
                             <button type="submit" className="auth-button">Sign Up</button>
                         </form>
 
