@@ -22,10 +22,14 @@ public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     @Column(unique = true)
-    private String email;
+    private String email; // TODO: Return proper error to the user when there is a duplicate in the provided email
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

@@ -9,10 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -28,8 +28,8 @@ class ClientStorageServiceTest {
     @Mock
     private FileUtil fileUtil;
 
-    @Spy
-    private final FilesystemPaths filesystemPaths = new FilesystemPaths();
+    @Mock
+    private FilesystemPaths filesystemPaths;
 
     @InjectMocks
     private ClientStorageService clientStorageService;
@@ -42,6 +42,7 @@ class ClientStorageServiceTest {
         client = new Client();
         clientId = 25L;
         client.setId(clientId);
+        filesystemPaths.storageServicePath = "backend/src/main/resources/editors";
     }
 
     @Test
@@ -49,11 +50,15 @@ class ClientStorageServiceTest {
         clientStorageService.createClient(client);
 
         String basePath = filesystemPaths.storageServicePath + "/" + clientId;
+        ArgumentCaptor<List<String>> foldersCaptor = ArgumentCaptor.forClass(List.class);
 
-        verify(fileUtil).createFolder(basePath);
-        verify(fileUtil).createFolder(basePath + "/projects");
-        verify(fileUtil).createFolder(basePath + "/shared");
-        verify(fileUtil).createFolder(basePath + "/shared_view");
+        verify(fileUtil).createFolders(foldersCaptor.capture());
+        assertEquals(List.of(
+                basePath,
+                basePath + "/projects",
+                basePath + "/shared",
+                basePath + "/shared_view"
+        ), foldersCaptor.getValue());
 
         ArgumentCaptor<Object> contentCaptor = ArgumentCaptor.forClass(Object.class);
         ArgumentCaptor<String> pathCaptor = ArgumentCaptor.forClass(String.class);
@@ -68,13 +73,19 @@ class ClientStorageServiceTest {
 
     @Test
     void createClientWrapsFileUtilFailure() {
-        doThrow(new RuntimeException("boom")).when(fileUtil).createFolder(any());
+        doThrow(new RuntimeException("boom")).when(fileUtil).createFolders(any());
 
         IllegalStateException exception = assertThrows(IllegalStateException.class,
                 () -> clientStorageService.createClient(client));
 
         assertEquals("Failed to create folder " + filesystemPaths.storageServicePath + "/" + clientId, exception.getMessage());
         assertInstanceOf(RuntimeException.class, exception.getCause());
+        verify(fileUtil).deleteFolders(List.of(
+                filesystemPaths.storageServicePath + "/" + clientId,
+                filesystemPaths.storageServicePath + "/" + clientId + "/projects",
+                filesystemPaths.storageServicePath + "/" + clientId + "/shared",
+                filesystemPaths.storageServicePath + "/" + clientId + "/shared_view"
+        ));
     }
 
     @Test

@@ -6,9 +6,11 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,6 +31,7 @@ class FileUtilTest {
     @Mock
     private EncryptionUtil encryptionUtil;
 
+    @Spy
     @InjectMocks
     private FileUtil fileUtil;
 
@@ -132,6 +137,26 @@ class FileUtilTest {
         fileUtil.deleteFolder(root.toString());
 
         assertFalse(Files.exists(root));
+    }
+
+    @Test
+    void deleteFolderRestoresOriginalFolderWhenDeletionFails() throws Exception {
+        Path root = tempDir.resolve("rollback-root");
+        Path nested = root.resolve("nested");
+        Files.createDirectories(nested);
+        Files.writeString(root.resolve("a.txt"), "a");
+        Files.writeString(nested.resolve("b.txt"), "b");
+
+        doThrow(new IOException("boom")).when(fileUtil).deleteRecursively(any(Path.class));
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> fileUtil.deleteFolder(root.toString()));
+
+        assertEquals("Error while deleting the folder, rolled back", exception.getMessage());
+        assertTrue(Files.exists(root));
+        assertTrue(Files.isDirectory(root));
+        assertTrue(Files.exists(root.resolve("a.txt")));
+        assertTrue(Files.exists(root.resolve("nested").resolve("b.txt")));
     }
 
     @Test

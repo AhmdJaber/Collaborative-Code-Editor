@@ -7,6 +7,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+import java.io.UncheckedIOException;
 
 @Service
 public class FileUtil {
@@ -78,24 +82,43 @@ public class FileUtil {
     }
 
     public void deleteFolder(String folderPath){
-        File folder = new File(folderPath);
+        Path original = Paths.get(folderPath);
+        if (!Files.exists(original) || !Files.isDirectory(original)) {
+            return;
+        }
 
-        if(folder.exists() && folder.isDirectory()){
-            File[] files = folder.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        deleteFolder(file.getAbsolutePath());
-                    }
-                    else if (!file.delete()) {
-                        throw new IllegalStateException("Something Went Wrong While Deleting The File " + file.getAbsolutePath());
-                    }
+        Path backup = original.resolveSibling(
+                original.getFileName() + ".delete-backup-" + UUID.randomUUID()
+        );
+
+        try {
+            Files.move(original, backup);
+            deleteRecursively(backup);
+        } catch (Exception e) {
+            try {
+                if (Files.exists(backup)) {
+                    Files.move(backup, original);
                 }
+            } catch (Exception rollbackError) {
+                e.addSuppressed(rollbackError);
             }
+            throw new IllegalStateException("Error while deleting the folder, rolled back", e);
+        }
+    }
 
-            if (!folder.delete()) {
-                throw new IllegalStateException("Something Went Wrong While Deleting The Folder " + folder.getAbsolutePath());
-            }
+    protected void deleteRecursively(Path root) throws IOException {
+        if (!Files.exists(root)) {
+            return;
+        }
+
+        try (var stream = Files.walk(root)) {
+            stream.sorted(Comparator.reverseOrder()).forEach(path -> {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
         }
     }
 
@@ -186,6 +209,18 @@ public class FileUtil {
             } else {
                 System.out.println("Folder " + path + " created!");
             }
+        }
+    }
+
+    public void createFolders(List<String> folderPaths) {
+        for (String folderPath: folderPaths){
+            createFolderIfNotExists(folderPath);
+        }
+    }
+
+    public void deleteFolders(List<String> folderPaths) {
+        for (String folderPath: folderPaths){
+            deleteFolder(folderPath);
         }
     }
 }

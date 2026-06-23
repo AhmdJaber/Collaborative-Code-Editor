@@ -3,19 +3,16 @@ package com.example.CodeEditor.services.storage;
 import com.example.CodeEditor.model.component.files.FileItem;
 import com.example.CodeEditor.model.component.files.FileNode;
 import com.example.CodeEditor.model.component.files.Project;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class FileStorageService {
-    @Autowired
-    private ProjectStorageService projectStorageService;
-
-    public FileStorageService(ProjectStorageService projectStorageService) {
-        this.projectStorageService = projectStorageService;
-    }
+    private final ProjectStorageService projectStorageService;
 
     public Long getFileIdByPath(Project project, String path) {
         Map<Long, FileNode> editorDir = projectStorageService.loadProjectStructure(project.getClient(), project.getId()).getTree();
