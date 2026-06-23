@@ -1,53 +1,61 @@
-name: Build and Deploy
+name: Build and Test
 
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
-  build-deploy:
-    name: Build and deploy code editor
+  build:
+    name: Build and test backend
     runs-on: ubuntu-latest
+
+    env:
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/code_editor?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234578
 
     services:
       mysql:
-        image: mysql:latest
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: 1234578
           MYSQL_DATABASE: code_editor
         ports:
           - 3306:3306
         options: >-
-          --health-cmd "mysqladmin ping --silent"
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -p1234578 --silent"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 3
+          --health-retries 10
+
+    defaults:
+      run:
+        working-directory: backend
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: 'temurin'
+          distribution: temurin
+          cache: maven
 
       - name: Grant execute permission to mvnw
-        working-directory: backend
-        run: chmod +x mvnw
+        run: chmod +x ./mvnw
 
-      - name: Wait for MySQL to be ready
+      - name: Verify MySQL is reachable
         run: |
-          while ! mysqladmin ping -h "localhost" --silent; do
-            sleep 1
-          done
+          timeout 120s bash -c 'until mysqladmin ping -h 127.0.0.1 -uroot -p1234578 --silent; do
+            sleep 2
+          done'
 
-      - name: Run Unit Tests
-        working-directory: backend
+      - name: Run tests
         run: ./mvnw -B test
 
-      - name: Build with Maven
-        working-directory: backend
-        run: ./mvnw clean package -DskipTests
+      - name: Build package
+        run: ./mvnw -B clean package -DskipTests
