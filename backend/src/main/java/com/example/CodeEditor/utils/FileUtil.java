@@ -151,7 +151,7 @@ public class FileUtil {
 
     private void copyDirectory(File sourceDirectory, File destinationDirectory) throws IOException {
         if (!destinationDirectory.exists()) {
-            destinationDirectory.mkdir();
+            destinationDirectory.mkdirs();
         }
         for (String f : sourceDirectory.list()) {
             copyDirectoryCompatibityMode(new File(sourceDirectory, f), new File(destinationDirectory, f));
@@ -181,7 +181,7 @@ public class FileUtil {
     public void createFolderIfNotExists(String path){
         File file = new File(path);
         if (!file.exists()){
-            if (!file.mkdir()){
+            if (!file.mkdirs()){
                 throw new IllegalStateException("Failed to create folder " + path);
             } else {
                 System.out.println("Folder " + path + " created!");
