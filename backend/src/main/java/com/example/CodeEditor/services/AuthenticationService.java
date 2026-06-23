@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,7 +52,14 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.valueOf(role))
                 .build();
-        Client savedClient = clientRepository.save(client);
+        Client savedClient;
+
+        try {
+            savedClient = clientRepository.saveAndFlush(client);
+        } catch (DataIntegrityViolationException ex) {
+            return new AuthenticationResponse("Email already in use");
+        }
+
         if (Role.valueOf(role) == Role.EDITOR){
             clientService.addClient(client);
         }

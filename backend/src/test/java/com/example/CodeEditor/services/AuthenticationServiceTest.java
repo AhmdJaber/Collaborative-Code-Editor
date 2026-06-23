@@ -66,7 +66,7 @@ class AuthenticationServiceTest {
         savedClient.setId(1L);
 
         when(passwordEncoder.encode("secret")).thenReturn("encoded");
-        when(clientRepository.save(any(Client.class))).thenReturn(savedClient);
+        when(clientRepository.saveAndFlush(any(Client.class))).thenReturn(savedClient);
         when(jwtService.generateAccessToken(any(Client.class))).thenReturn("access");
         when(jwtService.generateRefreshToken(any(Client.class))).thenReturn("refresh");
 
