@@ -416,3 +416,545 @@ html {
     cursor: not-allowed;
     opacity: 0.5;
 }
+
+.editor-register-page {
+    background:
+        radial-gradient(circle at top left, rgba(97, 218, 251, 0.22), transparent 30%),
+        radial-gradient(circle at top right, rgba(40, 44, 52, 0.12), transparent 25%),
+        linear-gradient(180deg, #f7fbff 0%, #eef3f8 100%);
+    min-height: 100vh;
+}
+
+.editor-register-header {
+    background: linear-gradient(90deg, #1d2430 0%, #293244 100%);
+    box-shadow: 0 8px 24px rgba(20, 27, 38, 0.18);
+}
+
+.editor-register-main {
+    padding: 32px 20px 48px;
+}
+
+.editor-register-shell {
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 28px;
+    align-items: stretch;
+}
+
+.editor-register-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #263241;
+    text-align: left;
+    padding: 28px 10px;
+}
+
+.editor-register-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(97, 218, 251, 0.14);
+    color: #0a6e88;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.editor-register-title {
+    margin: 0;
+    font-size: clamp(2.4rem, 4vw, 4.3rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    color: #17202b;
+    max-width: 12ch;
+}
+
+.editor-register-description {
+    margin: 18px 0 0;
+    max-width: 54ch;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: #556170;
+}
+
+.editor-register-benefits {
+    display: grid;
+    gap: 14px;
+    margin-top: 28px;
+    max-width: 560px;
+}
+
+.benefit-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid rgba(30, 41, 59, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(10px);
+}
+
+.benefit-card strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #18212d;
+}
+
+.benefit-card p {
+    margin: 0;
+    color: #5d6877;
+    line-height: 1.55;
+    font-size: 0.95rem;
+}
+
+.benefit-icon {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #1c2431, #3a475d);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+}
+
+.editor-register-card {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 32px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.16);
+    backdrop-filter: blur(18px);
+    text-align: left;
+}
+
+.editor-register-card-header h2 {
+    margin: 0;
+    font-size: 1.65rem;
+    color: #18202b;
+}
+
+.editor-register-card-header p {
+    margin: 8px 0 0;
+    color: #667185;
+    line-height: 1.55;
+}
+
+.editor-register-form {
+    margin-top: 22px;
+}
+
+.editor-form-field {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.editor-form-field span {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #344155;
+}
+
+.editor-input.modal_input {
+    width: 100%;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    padding: 14px 15px;
+    border-radius: 14px;
+    border: 1px solid #d7dee8;
+    background: #f9fbfd;
+    box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.editor-input.modal_input:focus {
+    outline: none;
+    border-color: #61dafb;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.18);
+}
+
+.editor-register-hint {
+    margin: 4px 0 0;
+    color: #6e7a88;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.editor-register-error {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.18);
+    color: #b42318;
+    font-size: 0.95rem;
+}
+
+.editor-register-submit.auth-button {
+    width: 100%;
+    height: 48px;
+    margin: 18px 0 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #61dafb 0%, #3cc8ee 100%);
+    color: #13202d;
+    box-shadow: 0 14px 30px rgba(97, 218, 251, 0.28);
+}
+
+.editor-register-submit.auth-button:hover {
+    background: linear-gradient(135deg, #13202d 0%, #273346 100%);
+    color: #ffffff;
+}
+
+.editor-register-submit.auth-button:focus-visible,
+.editor-input.modal_input:focus-visible,
+.welcome-header .auth-button:focus-visible {
+    outline: 3px solid rgba(97, 218, 251, 0.45);
+    outline-offset: 2px;
+}
+
+.editor-auth-page,
+.editor-register-page,
+.admin-register-page {
+    background:
+        radial-gradient(circle at top left, rgba(97, 218, 251, 0.22), transparent 30%),
+        radial-gradient(circle at top right, rgba(40, 44, 52, 0.12), transparent 25%),
+        linear-gradient(180deg, #f7fbff 0%, #eef3f8 100%);
+    min-height: 100vh;
+}
+
+.editor-auth-header,
+.editor-register-header {
+    background: linear-gradient(90deg, #1d2430 0%, #293244 100%);
+    box-shadow: 0 8px 24px rgba(20, 27, 38, 0.18);
+}
+
+.editor-auth-main,
+.editor-register-main {
+    padding: 32px 20px 48px;
+}
+
+.editor-auth-page .editor-register-shell,
+.editor-register-shell {
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 28px;
+    align-items: stretch;
+}
+
+.editor-login-page .editor-register-shell {
+    align-items: start;
+}
+
+.editor-login-shell {
+    width: min(560px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+}
+
+.editor-login-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.editor-login-page .login-box-editor {
+    min-height: unset;
+    height: auto;
+    padding-bottom: 0;
+}
+
+.editor-login-page .editor-register-card {
+    align-self: start;
+    max-width: 460px;
+    width: 100%;
+}
+
+.editor-auth-page .editor-register-copy,
+.editor-register-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #263241;
+    text-align: left;
+    padding: 28px 10px;
+}
+
+.editor-auth-page .editor-register-eyebrow,
+.editor-register-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(97, 218, 251, 0.14);
+    color: #0a6e88;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.editor-auth-page .editor-register-title,
+.editor-register-title {
+    margin: 0;
+    font-size: clamp(2.4rem, 4vw, 4.3rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    color: #17202b;
+    max-width: 12ch;
+}
+
+.editor-auth-page .editor-register-description,
+.editor-register-description {
+    margin: 18px 0 0;
+    max-width: 54ch;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: #556170;
+}
+
+.editor-auth-page .editor-register-benefits,
+.editor-register-benefits {
+    display: grid;
+    gap: 14px;
+    margin-top: 28px;
+    max-width: 560px;
+}
+
+.editor-auth-page .benefit-card,
+.benefit-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid rgba(30, 41, 59, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(10px);
+}
+
+.editor-auth-page .benefit-card strong,
+.benefit-card strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #18212d;
+}
+
+.editor-auth-page .benefit-card p,
+.benefit-card p {
+    margin: 0;
+    color: #5d6877;
+    line-height: 1.55;
+    font-size: 0.95rem;
+}
+
+.editor-auth-page .benefit-icon,
+.benefit-icon {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #1c2431, #3a475d);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+}
+
+.editor-auth-page .editor-register-card,
+.editor-register-card {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 32px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.16);
+    backdrop-filter: blur(18px);
+    text-align: left;
+}
+
+.editor-login-page .editor-register-card {
+    padding: 24px 32px 24px;
+}
+
+.editor-auth-page .editor-register-card-header h2,
+.editor-register-card-header h2 {
+    margin: 0;
+    font-size: 1.65rem;
+    color: #18202b;
+}
+
+.editor-auth-page .editor-register-card-header p,
+.editor-register-card-header p {
+    margin: 8px 0 0;
+    color: #667185;
+    line-height: 1.55;
+}
+
+.editor-auth-page .editor-register-form,
+.editor-register-form {
+    margin-top: 22px;
+}
+
+.editor-login-page .editor-register-form {
+    margin-top: 18px;
+}
+
+.editor-login-page .editor-register-card-header p,
+.editor-login-page .editor-register-hint {
+    text-align: center;
+}
+
+.editor-login-page .editor-register-form {
+    margin-top: 14px;
+}
+
+.editor-auth-page .editor-form-field,
+.editor-form-field {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.editor-auth-page .editor-form-field span,
+.editor-form-field span {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #344155;
+}
+
+.editor-auth-page .editor-input.modal_input,
+.editor-input.modal_input {
+    width: 100%;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    padding: 14px 15px;
+    border-radius: 14px;
+    border: 1px solid #d7dee8;
+    background: #f9fbfd;
+    box-shadow: inset 0 1px 2px rgba(16, 24, 40, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.editor-auth-page .editor-input.modal_input:focus,
+.editor-input.modal_input:focus {
+    outline: none;
+    border-color: #61dafb;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.18);
+}
+
+.editor-auth-page .editor-register-hint,
+.editor-register-hint {
+    margin: 4px 0 0;
+    color: #6e7a88;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.editor-auth-page .editor-register-error,
+.editor-register-error {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.18);
+    color: #b42318;
+    font-size: 0.95rem;
+}
+
+.editor-auth-page .editor-register-submit.auth-button,
+.editor-register-submit.auth-button {
+    width: 100%;
+    height: 48px;
+    margin: 16px 0 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #61dafb 0%, #3cc8ee 100%);
+    color: #13202d;
+    box-shadow: 0 14px 30px rgba(97, 218, 251, 0.28);
+}
+
+.editor-auth-page .editor-register-submit.auth-button:hover,
+.editor-register-submit.auth-button:hover {
+    background: linear-gradient(135deg, #13202d 0%, #273346 100%);
+    color: #ffffff;
+}
+
+.editor-login-page .editor-register-submit.auth-button {
+    margin-bottom: 0;
+}
+
+.editor-auth-page .editor-register-submit.auth-button:focus-visible,
+.editor-auth-page .editor-input.modal_input:focus-visible,
+.editor-auth-page .welcome-header .auth-button:focus-visible,
+.editor-register-submit.auth-button:focus-visible,
+.editor-input.modal_input:focus-visible,
+.welcome-header .auth-button:focus-visible {
+    outline: 3px solid rgba(97, 218, 251, 0.45);
+    outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+    .editor-auth-page .editor-register-shell,
+    .editor-register-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-auth-page .editor-register-copy,
+    .editor-register-copy {
+        padding: 0 6px;
+    }
+}
+
+@media (max-width: 640px) {
+    .editor-auth-main,
+    .editor-register-main {
+        padding: 20px 14px 36px;
+    }
+
+    .editor-auth-page .editor-register-card,
+    .editor-register-card {
+        padding: 22px 18px;
+        border-radius: 22px;
+    }
+
+    .editor-login-page .editor-register-card {
+        padding-bottom: 14px;
+    }
+
+    .editor-auth-page .editor-register-title,
+    .editor-register-title {
+        font-size: clamp(2rem, 9vw, 3rem);
+    }
+
+    .editor-auth-page .editor-register-benefits,
+    .editor-register-benefits {
+        margin-top: 22px;
+    }
+}

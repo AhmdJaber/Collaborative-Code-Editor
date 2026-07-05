@@ -2,12 +2,7 @@
 using namespace std;
 
 int main() {
-	//Start Coding
-	cout << "Hello World!" << endl;
-	cout << "Is it working here?" << endl; 
-	cout << "And now?" << endl;
-	for(int i = 0; i < 3; i++){
-		cout << "here" << endl; 
-	}
-	cout << "here again"; 
+	int n; 
+	cin >> n; 
+	cout << n + 1 << endl;  
 }

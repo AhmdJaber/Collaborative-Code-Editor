@@ -51,10 +51,22 @@
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
+.auth-button-name--sign-up {
+    border: 1px solid #61dafb;
+    box-sizing: border-box;
+}
+
+
 /* Hover effect */
 .auth-button:hover {
     background-color: #282c34; /* Darker shade of blue */
     color: #61dafb; /* Change text color */
+}
+
+/* Hover effect */
+.auth-button-name:hover {
+    background-color: #61dafb;
+    color: #282c34;
 }
 
 /* Main content styles */

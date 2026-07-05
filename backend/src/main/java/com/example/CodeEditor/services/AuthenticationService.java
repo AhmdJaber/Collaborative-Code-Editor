@@ -60,9 +60,9 @@ public class AuthenticationService {
             return new AuthenticationResponse("Email already in use");
         }
 
-        if (Role.valueOf(role) == Role.EDITOR){
+//        if (Role.valueOf(role) == Role.EDITOR){
             clientService.addClient(client);
-        }
+//        }
         String accessToken = jwtService.generateAccessToken(client);
         String refreshToken = jwtService.generateRefreshToken(client);
         saveClientToken(savedClient, accessToken);

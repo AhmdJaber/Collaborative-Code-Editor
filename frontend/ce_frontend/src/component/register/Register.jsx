@@ -35,9 +35,6 @@ const MainPage = () => {
                         <h1>Register as:</h1>
                         <br />
 
-                            <button className="auth-button" onClick={handleAdminClieck}>Admin</button>
-                        <br /><br />
-
                             <button className="auth-button" onClick={handleEditorClieck}>Editor</button>
                     </div>
                 </div>
