@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 
 import CppIcon from './images/cpp.png';
 import JavaIcon from './images/java.png';
@@ -49,6 +50,7 @@ const EditorMain = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('editorAccessToken');
+        
         if (!token) {
             navigate("/editor/login");
         } else {
@@ -134,6 +136,9 @@ const EditorMain = () => {
             console.log("New access token generated");
             const data = await response.json();
             localStorage.setItem('editorAccessToken', data.access_token);
+            if (data.client?.role) {
+                localStorage.setItem('editorRole', data.client.role);
+            }
             return data.access_token;
         } else {
             throw new Error('Failed to refresh access token');
@@ -150,6 +155,7 @@ const EditorMain = () => {
                 console.error('Unable to refresh token, logging out:', error);
                 localStorage.removeItem('editorAccessToken');
                 localStorage.removeItem('editorRefreshToken');
+                localStorage.removeItem('editorRole');
                 navigate('/editor/login');
                 return;
             }
@@ -169,6 +175,7 @@ const EditorMain = () => {
             // Handle unauthorized error properly
             localStorage.removeItem('editorAccessToken');
             localStorage.removeItem('editorRefreshToken');
+            localStorage.removeItem('editorRole');
             navigate('/editor/login');
             return;
         }
@@ -252,6 +259,7 @@ const EditorMain = () => {
                     localStorage.removeItem('editorAccessToken');
                     localStorage.removeItem('email'); 
                     localStorage.removeItem('name'); 
+                    localStorage.removeItem('editorRole');
                     navigate('/editor/login');
                 } else {
                     console.error('Failed to logout');
@@ -1227,7 +1235,7 @@ const EditorMain = () => {
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="editor" />
                 <div className="auth-buttons">
                     {localStorage.getItem('own') && (
                         <div>

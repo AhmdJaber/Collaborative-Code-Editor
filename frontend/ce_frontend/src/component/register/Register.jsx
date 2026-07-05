@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 
 const MainPage = () => {
     const navigate = useNavigate();
     const handleHome = () => {
         navigate("/")
-    }
-
-    const handleAdminClieck = () =>{
-        navigate("/admin/register"); 
     }
 
     const handleEditorClieck = () =>{
@@ -18,7 +15,7 @@ const MainPage = () => {
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="editor" />
                 <div className="auth-buttons">
                     <button className="auth-button" onClick={handleHome}>Home</button>
                 </div>

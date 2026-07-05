@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 import './EditorStyle.css';
 
 function EditorLogin() { 
@@ -16,7 +17,7 @@ function EditorLogin() {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:8080/auth/authenticate/EDITOR', {
+            const response = await fetch('http://localhost:8080/auth/authenticate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,11 +32,13 @@ function EditorLogin() {
                 localStorage.setItem('editorRefreshToken', authResponse.refresh_token);
                 localStorage.setItem('email', email); 
                 localStorage.setItem('name', authResponse.client.name); 
+                localStorage.setItem('editorRole', authResponse.client.role);
                 
                 
                 navigate('/editor/projects');
             } else {
-                setError("Wrong username or password!");
+                const authResponse = await response.json().catch(() => null);
+                setError(authResponse?.error || "Wrong username or password!");
                 console.error('Login failed');
             }
         } catch (error) {
@@ -47,7 +50,7 @@ function EditorLogin() {
     return (
         <div className="welcome-page editor-auth-page editor-login-page">
             <header className="welcome-header editor-auth-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="editor" />
                 <div className="auth-buttons">
                     <button className="auth-button" onClick={handleHome}>Home</button>
                 </div>

@@ -1,11 +1,10 @@
 import './App.css'
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import LoginPage from './component/login/Login'
 import RegisterPage from './component/register/Register'
 
-import AdminRegister from './component/admin/RegisterAdmin'
 import EditorRegister from './component/editor/RegisterEditor'
 
 import EditorMain from './component/editor/MainEditor';
@@ -14,7 +13,6 @@ import ProtectEditor from './component/editor/ProtectedRoute';
 import EditorProjects from './component/editor/EditorProjects'
 
 import AdminMain from './component/admin/MainAdmin';
-import AdminLogin from './component/admin/LoginAdmin';
 import ProtectAdmin from './component/admin/ProtectedRoute';
 
 import RepoMain from './component/repos/MainRepos';
@@ -36,8 +34,8 @@ function App() {
           <Route path='/register' element={<RegisterPage />}></Route>
           <Route path='/login' element={<LoginPage />}></Route>
 
-          <Route path='/admin/register' element={<AdminRegister />}></Route>
           <Route path='/editor/register' element={<EditorRegister />}></Route>
+          <Route path='/admin/register' element={<Navigate to="/editor/register" replace />}></Route>
           
           <Route path="/editor/login" element={<EditorLogin />} />
           <Route path="/editor/projects" element={<EditorProjects />} />
@@ -46,7 +44,7 @@ function App() {
               element={<ProtectEditor component={EditorMain} />}
           />
 
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/login" element={<Navigate to="/editor/login" replace />} />
           <Route
               path="/admin"
               element={<ProtectAdmin component={AdminMain} />}

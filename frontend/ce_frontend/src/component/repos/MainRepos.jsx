@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 import './ReposStyle.css';
 
 const ReposMain = () => {
@@ -46,6 +47,9 @@ const ReposMain = () => {
             console.log("New access token generated");
             const data = await response.json();
             localStorage.setItem('editorAccessToken', data.access_token);
+            if (data.client?.role) {
+                localStorage.setItem('editorRole', data.client.role);
+            }
             return data.access_token;
         } else {
             throw new Error('Failed to refresh access token');
@@ -62,6 +66,7 @@ const ReposMain = () => {
                 console.error('Unable to refresh token, logging out:', error);
                 localStorage.removeItem('editorAccessToken');
                 localStorage.removeItem('editorRefreshToken');
+                localStorage.removeItem('editorRole');
                 navigate('/editor/login');
                 return;
             }
@@ -80,6 +85,7 @@ const ReposMain = () => {
         if (response.status === 401) {
             localStorage.removeItem('editorAccessToken');
             localStorage.removeItem('editorRefreshToken');
+            localStorage.removeItem('editorRole');
             navigate('/editor/login');
             return;
         }
@@ -101,6 +107,8 @@ const ReposMain = () => {
 
                 if (response.ok) {
                     localStorage.removeItem('editorAccessToken');
+                    localStorage.removeItem('editorRefreshToken');
+                    localStorage.removeItem('editorRole');
                     navigate('/main');
                 } else {
                     console.error('Failed to logout');
@@ -189,7 +197,7 @@ const ReposMain = () => {
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="editor" />
                 <div className="auth-buttons">
                     <button onClick={handleLogout} className="auth-button">Log out</button>
                     <button className="auth-button" onClick={handleHome}>Home</button>

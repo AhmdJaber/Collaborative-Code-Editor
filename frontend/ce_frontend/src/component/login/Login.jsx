@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 import './LoginPage.css'; // Assuming you have a separate CSS file for styling
 
 const MainPage = () => {
@@ -10,7 +11,7 @@ const MainPage = () => {
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="editor" />
                 <div className="auth-buttons">
                     <button className="auth-button" onClick={handleHome}>Home</button>
                 </div>
@@ -24,16 +25,15 @@ const MainPage = () => {
                     </h1>
                     <hr />
                     <div className="login-box">
-                        <h1>Login as:</h1>
+                        <h1>Editor access</h1>
                         <br />
 
-                        <form action="admin" method="GET">
-                            <button type="submit" className="auth-button">Admin</button>
+                        <form action="/editor/login" method="GET">
+                            <button type="submit" className="auth-button">Sign In</button>
                         </form>
                         <br />
-
-                        <form action="editor" method="GET">
-                            <button type="submit" className="auth-button">Editor</button>
+                        <form action="/editor/register" method="GET">
+                            <button type="submit" className="auth-button">Sign Up</button>
                         </form>
                     </div>
                 </div>

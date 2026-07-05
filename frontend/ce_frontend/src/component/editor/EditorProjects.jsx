@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 import './EditorStyle.css';
 
 /*
@@ -52,6 +53,9 @@ const EditorProject = () => {
             console.log("New access token generated");
             const data = await response.json();
             localStorage.setItem('editorAccessToken', data.access_token);
+            if (data.client?.role) {
+                localStorage.setItem('editorRole', data.client.role);
+            }
             return data.access_token;
         } else {
             throw new Error('Failed to refresh access token');
@@ -68,6 +72,7 @@ const EditorProject = () => {
                 console.error('Unable to refresh token, logging out:', error);
                 localStorage.removeItem('editorAccessToken');
                 localStorage.removeItem('editorRefreshToken');
+                localStorage.removeItem('editorRole');
                 navigate('/editor/login');
                 return;
             }
@@ -87,6 +92,7 @@ const EditorProject = () => {
             // Handle unauthorized error properly
             localStorage.removeItem('editorAccessToken');
             localStorage.removeItem('editorRefreshToken');
+            localStorage.removeItem('editorRole');
             navigate('/editor/login');
             return;
         }
@@ -109,8 +115,10 @@ const EditorProject = () => {
 
                 if (response.ok) {
                     localStorage.removeItem('editorAccessToken');
+                    localStorage.removeItem('editorRefreshToken');
                     localStorage.removeItem('email');
                     localStorage.removeItem('name');
+                    localStorage.removeItem('editorRole');
                     navigate('/main');
                 } else {
                     console.error('Failed to logout');
@@ -352,7 +360,7 @@ const EditorProject = () => {
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="editor" />
                 <div className="auth-buttons">
                     <button onClick={createProject} className="auth-button">New Project</button>
                     <button onClick={deleteProject} className="auth-button">Delete Project</button>

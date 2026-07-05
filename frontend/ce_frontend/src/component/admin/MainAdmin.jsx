@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 import './AdminStyle.css';
 import './init'
 
@@ -10,13 +11,49 @@ const AdminMain = () => {
     const [output, setOutput] = useState();
     const [editorId, setEditorId] = useState();
     const [projectId, setProjectId] = useState();
+    const [isAdmin, setIsAdmin] = useState(null);
 
 
     useEffect(() => {
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         if (!token) {
-            navigate("/admin/login");
+            navigate("/editor/login");
+            return;
         }
+
+        const verifyAdminAuthority = async () => {
+            try {
+                const response = await fetchWithAuth('http://localhost:8080/auth/me', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                if (!response) {
+                    return;
+                }
+
+                if (!response.ok) {
+                    navigate('/editor/projects');
+                    return;
+                }
+
+                const currentUser = await response.json();
+                if (currentUser.role !== 'ADMIN') {
+                    navigate('/editor/projects');
+                    return;
+                }
+
+                setIsAdmin(true);
+            } catch (error) {
+                console.error('Failed to verify admin authority:', error);
+                navigate('/editor/projects');
+            }
+        };
+
+        verifyAdminAuthority();
     }, [navigate]);
 
     const isTokenExpired = (token) => {
@@ -26,7 +63,7 @@ const AdminMain = () => {
     };
 
     const refreshAccessToken = async () => {
-        const refreshToken = localStorage.getItem('adminRefreshToken');
+        const refreshToken = localStorage.getItem('editorRefreshToken');
         if (!refreshToken) {
             throw new Error('No refresh token available');
         }
@@ -42,7 +79,10 @@ const AdminMain = () => {
         if (response.ok) {
             console.log("New access token generated");
             const data = await response.json();
-            localStorage.setItem('adminAccessToken', data.access_token);
+            localStorage.setItem('editorAccessToken', data.access_token);
+            if (data.client?.role) {
+                localStorage.setItem('editorRole', data.client.role);
+            }
             return data.access_token;
         } else {
             throw new Error('Failed to refresh access token');
@@ -50,16 +90,17 @@ const AdminMain = () => {
     };
 
     const fetchWithAuth = async (url, options = {}) => {
-        let token = localStorage.getItem('adminAccessToken');
+        let token = localStorage.getItem('editorAccessToken');
 
         if (isTokenExpired(token)) {
             try {
                 token = await refreshAccessToken();
             } catch (error) {
                 console.error('Unable to refresh token, logging out:', error);
-                localStorage.removeItem('adminAccessToken');
-                localStorage.removeItem('adminRefreshToken');
-                navigate('/admin/login');
+                localStorage.removeItem('editorAccessToken');
+                localStorage.removeItem('editorRefreshToken');
+                localStorage.removeItem('editorRole');
+                navigate('/editor/login');
                 return;
             }
         }
@@ -76,9 +117,10 @@ const AdminMain = () => {
 
         if (response.status === 401) {
             // Handle unauthorized error properly
-            localStorage.removeItem('adminAccessToken');
-            localStorage.removeItem('adminRefreshToken');
-            navigate('/admin/login');
+            localStorage.removeItem('editorAccessToken');
+            localStorage.removeItem('editorRefreshToken');
+            localStorage.removeItem('editorRole');
+            navigate('/editor/login');
             return;
         }
 
@@ -93,15 +135,17 @@ const AdminMain = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('adminAccessToken')}`,
+                        'Authorization': `Bearer ${localStorage.getItem('editorAccessToken')}`,
                     }
                 });
 
                 if (response.ok) {
-                    localStorage.removeItem('adminAccessToken');
-                    localStorage.removeItem('adminEmail');
-                    localStorage.removeItem('adminName');
-                    navigate('/admin/login');
+                    localStorage.removeItem('editorAccessToken');
+                    localStorage.removeItem('editorRefreshToken');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('name');
+                    localStorage.removeItem('editorRole');
+                    navigate('/editor/login');
                 } else {
                     console.error('Failed to logout');
                 }
@@ -114,7 +158,7 @@ const AdminMain = () => {
     };
 
     const handleAllEditors = async () => {
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         try {
             const response = await fetchWithAuth(`http://localhost:8080/admin/get-editors`, {
                 method: 'GET',
@@ -151,7 +195,7 @@ const AdminMain = () => {
             return;
         }
 
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         try {
             await fetchWithAuth(`http://localhost:8080/admin/remove-editor/${editorId}`, {
                 method: 'DELETE',
@@ -167,7 +211,7 @@ const AdminMain = () => {
     }
 
     const handleAllEditorProjects = async () => {
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         try {
             const response = await fetchWithAuth(`http://localhost:8080/admin/get-editor-projects/${editorId}`, {
                 method: 'GET',
@@ -202,7 +246,7 @@ const AdminMain = () => {
             return;
         }
 
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         try {
             await fetchWithAuth(`http://localhost:8080/admin/remvoe-project/${editorId}/${projectId}`, {
                 method: 'DELETE',
@@ -218,7 +262,7 @@ const AdminMain = () => {
     }
 
     const handleAllSharedWith = async () => {
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         try {
             const response = await fetchWithAuth(`http://localhost:8080/admin/get-shared/${editorId}`, {
                 method: 'GET',
@@ -244,7 +288,7 @@ const AdminMain = () => {
             return;
         }
 
-        const token = localStorage.getItem('adminAccessToken');
+        const token = localStorage.getItem('editorAccessToken');
         try {
             await fetchWithAuth(`http://localhost:8080/admin/remove-shared-project/${editorId}/${projectId}`, {
                 method: 'DELETE',
@@ -263,10 +307,14 @@ const AdminMain = () => {
         setVisibleInput(visibleInput === buttonName ? null : buttonName);
     };
 
+    if (isAdmin !== true) {
+        return null;
+    }
+
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="admin" />
                 <div className="auth-buttons">
                     <button onClick={handleLogout} className="auth-button">Log out</button>
                     <button className="auth-button" onClick={ () => navigate('/')}>Home</button>

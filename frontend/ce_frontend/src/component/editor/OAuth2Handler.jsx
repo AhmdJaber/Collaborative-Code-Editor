@@ -17,7 +17,22 @@ function OAuth2RedirectHandler() {
         if (accessToken && refreshToken) {
             localStorage.setItem('editorAccessToken', accessToken);
             localStorage.setItem('editorRefreshToken', refreshToken);
-            navigate('/editor');
+            fetch('http://localhost:8080/auth/me', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            })
+                .then((response) => response.ok ? response.json() : null)
+                .then((currentUser) => {
+                    if (currentUser?.role) {
+                        localStorage.setItem('editorRole', currentUser.role);
+                    }
+                })
+                .finally(() => {
+                    navigate('/editor');
+                });
         } else {
             console.error('OAuth2 login failed');
             navigate('/editor/login');   

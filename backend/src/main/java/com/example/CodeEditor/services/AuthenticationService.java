@@ -44,13 +44,13 @@ public class AuthenticationService {
     @Autowired
     private TokenRepository tokenRepository;
 
-    public AuthenticationResponse register(RegisterDTO request, String role) {
+    public AuthenticationResponse register(RegisterDTO request) {
         Client client = Client
                 .builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.valueOf(role))
+                .role(Role.EDITOR)
                 .build();
         Client savedClient;
 
@@ -60,9 +60,7 @@ public class AuthenticationService {
             return new AuthenticationResponse("Email already in use");
         }
 
-//        if (Role.valueOf(role) == Role.EDITOR){
             clientService.addClient(client);
-//        }
         String accessToken = jwtService.generateAccessToken(client);
         String refreshToken = jwtService.generateRefreshToken(client);
         saveClientToken(savedClient, accessToken);
@@ -80,7 +78,7 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public AuthenticationResponse authenticate(AuthenticationDTO request, String role) {
+    public AuthenticationResponse authenticate(AuthenticationDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -89,14 +87,15 @@ public class AuthenticationService {
         );
 
         Client client = clientRepository.findByEmail(request.getEmail()).orElseThrow();
-        if (Role.valueOf(role) != client.getRole()){
-            return null;
-        }
         String accessToken = jwtService.generateAccessToken(client);
         String refreshToken = jwtService.generateRefreshToken(client);
         deleteAllClientExpiredTokens(client);
         saveClientToken(client, accessToken);
         return new AuthenticationResponse(accessToken, refreshToken, client);
+    }
+
+    public Client getCurrentAuthenticatedClient(String email) {
+        return clientRepository.findByEmail(email).orElseThrow();
     }
 
     public void deleteAllClientExpiredTokens(Client client){

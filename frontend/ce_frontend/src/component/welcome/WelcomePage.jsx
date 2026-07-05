@@ -1,11 +1,46 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import TwinCodeBrand from '../common/TwinCodeBrand';
 import './WelcomePage.css';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [role, setRole] = useState(null);
 
     const isLoggedIn = !!localStorage.getItem('email');
+
+    useEffect(() => {
+        const verifyAdminAuthority = async () => {
+            const token = localStorage.getItem('editorAccessToken');
+            if (!token) {
+                setRole(null);
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8080/auth/me', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    setRole(null);
+                    return;
+                }
+
+                const currentUser = await response.json();
+                setRole(currentUser.role || null);
+            } catch (error) {
+                setRole(null);
+            }
+        };
+
+        verifyAdminAuthority();
+    }, [location.key]);
 
     const handleLogin = () => {
         navigate("/editor/login");
@@ -25,12 +60,15 @@ const WelcomePage = () => {
         localStorage.removeItem('editorRefreshToken');
         localStorage.removeItem('email');
         localStorage.removeItem('name');
+        localStorage.removeItem('editorRole');
         navigate('/');
     };
 
     const handleSignup = () => {
         navigate("/editor/register");
     };
+
+    const isAdmin = role === 'ADMIN';
 
     const handlePublicRepos = () => {
         if (!localStorage.getItem('editorRefreshToken')) {
@@ -51,14 +89,14 @@ const WelcomePage = () => {
     return (
         <div className="welcome-page">
             <header className="welcome-header">
-                <div className="app-name">TwinCode</div>
+                <TwinCodeBrand fallbackLabel="guest" />
 
                 {!isLoggedIn ? (
                     <div className="auth-buttons">
                         <button className="auth-button-name" onClick={handleLogin}>
                             Sign In
                         </button>
-                        <button className="auth-button-name auth-button-name--sign-up" onClick={handleSignup}>
+                            <button className="auth-button-name auth-button-name--sign-up" onClick={handleSignup}>
                             Sign Up
                         </button>
                     </div>
@@ -113,10 +151,6 @@ const WelcomePage = () => {
                     {isLoggedIn ? (
                         <>
                             <div className="start-coding">
-                                <span
-                                    className="pip"
-                                    style={{ background: "#353d4c" }}
-                                ></span>
                                 <button
                                     className="start-button"
                                     onClick={handlePublicRepos}
@@ -126,23 +160,6 @@ const WelcomePage = () => {
                             </div>
 
                             <div className="start-coding">
-                                <span
-                                    className="pip"
-                                    style={{ background: "#353d4c" }}
-                                ></span>
-                                <button
-                                    className="start-button"
-                                    onClick={() => navigate("/admin")}
-                                >
-                                    Admin page
-                                </button>
-                            </div>
-
-                            <div className="start-coding">
-                                <span
-                                    className="pip"
-                                    style={{ background: "#353d4c" }}
-                                ></span>
                                 <button
                                     className="start-button-admin"
                                     onClick={handleStartCodeing}
@@ -150,6 +167,17 @@ const WelcomePage = () => {
                                     Start Coding
                                 </button>
                             </div>
+
+                            {isAdmin && (
+                                <div className="start-coding">
+                                    <button
+                                        className="start-button admin-authority-button admin-authority-button--stacked"
+                                        onClick={() => navigate('/admin')}
+                                    >
+                                        Adminstration
+                                    </button>
+                                </div>
+                            )}
                         </>
                     ) : (
                         <div className="welcome-auth-buttons">

@@ -6,21 +6,84 @@
 .welcome-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 15px 20px;
     background-color: #282c34;
     height: 40px;
     /* Increased height */
 }
 
+.welcome-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .app-name {
     color: white;
     font-size: 24px;
     font-weight: bold;
-    margin-top: 8px;
+    margin-top: 0;
 }
 
 .auth-buttons {
     display: flex;
+    align-items: center;
+}
+
+.auth-header-stack {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+}
+
+.role-eyebrow {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #f5f7fb;
+    backdrop-filter: blur(8px);
+    transition: box-shadow 0.28s ease, border-color 0.28s ease, background-color 0.28s ease, color 0.28s ease, opacity 0.28s ease;
+    overflow: visible;
+    isolation: isolate;
+}
+
+.role-eyebrow--guest {
+    color: #c7d0db;
+}
+
+.role-eyebrow--admin {
+    background: linear-gradient(135deg, #ffb347, #ff5f6d);
+    color: #1b1020;
+}
+
+.role-eyebrow--editor {
+    background: linear-gradient(135deg, #8ee3f5, #61dafb);
+    color: #0e1728;
+}
+
+.role-eyebrow:hover {
+    border-color: rgba(255, 255, 255, 0.32);
+    opacity: 1;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 0 22px rgba(255, 255, 255, 0.12);
+}
+
+.role-eyebrow--admin:hover {
+    box-shadow: 0 0 0 1px rgba(255, 178, 71, 0.35), 0 0 28px rgba(255, 95, 109, 0.38);
+}
+
+.role-eyebrow--editor:hover {
+    box-shadow: 0 0 0 1px rgba(97, 218, 251, 0.3), 0 0 28px rgba(97, 218, 251, 0.32);
 }
 
 .auth-button {
@@ -35,6 +98,23 @@
     font-weight: bold;
     margin-left: 10px;
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.admin-authority-button {
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #ffd166, #ff9f1c);
+    color: #282c34;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-authority-button--stacked {
+    margin-left: 0;
+    margin-top: 0;
 }
 
 .auth-button-name {
@@ -69,6 +149,19 @@
     color: #282c34;
 }
 
+.admin-authority-button:hover {
+    background: linear-gradient(135deg, #2b1b44, #0f172a);
+    color: #ffd166;
+}
+
+.start-button.admin-authority-button:hover {
+    color: #ffd166;
+}
+
+.admin-authority-button:active {
+    transform: translateY(0);
+}
+
 /* Main content styles */
 .main-content {
     display: flex;
@@ -100,18 +193,8 @@
     justify-content: center;
 }
 
-.pip {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #61dafb;
-    margin-right: 10px;
-}
-
 /* Button styles */
 .start-button {
-    padding: 10px 20px;
     font-size: 18px;
     border: none;
     border-radius: 6px;
@@ -121,8 +204,12 @@
     font-weight: bold;
     transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
 }
+
+.start-button.admin-authority-button {
+    color: #282c34;
+}
+
 .start-button-admin {
-    padding: 10px 20px;
     font-size: 18px;
     border: none;
     border-radius: 6px;
@@ -131,6 +218,16 @@
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.start-button-admin.admin-authority-button--stacked {
+    margin-left: 0;
+}
+
+.start-button,
+.start-button-admin,
+.admin-authority-button {
+    padding: 10px 24px;
 }
 
 /* Hover effect for buttons */
@@ -141,4 +238,13 @@
 .start-button-admin:hover {
     background-color: #61dafb;
     color: #282c34;
+}
+
+.admin-authority-button:focus-visible,
+.auth-button:focus-visible,
+.auth-button-name:focus-visible,
+.start-button:focus-visible,
+.start-button-admin:focus-visible {
+    outline: 2px solid #ffd166;
+    outline-offset: 3px;
 }

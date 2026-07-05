@@ -74,15 +74,6 @@
     justify-content: center;
 }
 
-.pip {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #61dafb;
-    margin-right: 10px;
-}
-
 /* Button styles */
 .start-button {
     padding: 10px 20px;
@@ -146,4 +137,63 @@
 /* Style for selected item */
 .file-item.selected {
     background-color: #e1e4e8; /* Gray background for selected item */
+}
+/* Shared TwinCode brand badge */
+.welcome-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f5f7fb;
+  backdrop-filter: blur(8px);
+  overflow: visible;
+  isolation: isolate;
+  transition: box-shadow 0.28s ease, border-color 0.28s ease, background-color 0.28s ease, color 0.28s ease, opacity 0.28s ease;
+}
+
+.brand-eyebrow--guest {
+  color: #c7d0db;
+}
+
+.brand-eyebrow--admin {
+  background: linear-gradient(135deg, #ffb347, #ff5f6d);
+  color: #1b1020;
+}
+
+.brand-eyebrow--editor {
+  background: linear-gradient(135deg, #8ee3f5, #61dafb);
+  color: #0e1728;
+}
+
+.brand-eyebrow:hover {
+  border-color: rgba(255, 255, 255, 0.32);
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 0 24px rgba(255, 255, 255, 0.12);
+}
+
+.brand-eyebrow--admin:hover {
+  box-shadow: 0 0 0 1px rgba(255, 178, 71, 0.35), 0 0 30px rgba(255, 95, 109, 0.38);
+}
+
+.brand-eyebrow--editor:hover {
+  box-shadow: 0 0 0 1px rgba(97, 218, 251, 0.3), 0 0 30px rgba(97, 218, 251, 0.32);
+}
+
+.brand-eyebrow:active {
+  box-shadow: none;
 }

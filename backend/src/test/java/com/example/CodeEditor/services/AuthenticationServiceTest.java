@@ -44,6 +44,9 @@ class AuthenticationServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
     private ClientService clientService;
 
     @Mock
@@ -67,7 +70,7 @@ class AuthenticationServiceTest {
         when(jwtService.generateAccessToken(any(Client.class))).thenReturn("access");
         when(jwtService.generateRefreshToken(any(Client.class))).thenReturn("refresh");
 
-        AuthenticationResponse response = authenticationService.register(request, "EDITOR");
+        AuthenticationResponse response = authenticationService.register(request);
 
         assertEquals("access", response.getAccessToken());
         assertEquals("refresh", response.getRefreshToken());
@@ -77,17 +80,23 @@ class AuthenticationServiceTest {
     }
 
     @Test
-    void authenticateReturnsNullWhenRoleDoesNotMatch() {
+    void authenticateReturnsTokensRegardlessOfRole() {
         AuthenticationDTO request = AuthenticationDTO.builder()
                 .email("owner@example.com")
                 .password("secret")
                 .build();
         Client client = client("owner@example.com", Role.VIEWER);
+        when(authenticationManager.authenticate(any())).thenReturn(null);
         when(clientRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(client));
+        when(jwtService.generateAccessToken(client)).thenReturn("access");
+        when(jwtService.generateRefreshToken(client)).thenReturn("refresh");
+        when(tokenRepository.findAllValidTokenClient(client.getId())).thenReturn(List.of());
 
-        Object response = authenticationService.authenticate(request, "EDITOR");
+        AuthenticationResponse response = authenticationService.authenticate(request);
 
-        assertNull(response);
+        assertNotNull(response);
+        assertEquals("access", response.getAccessToken());
+        assertEquals("refresh", response.getRefreshToken());
     }
 
     @Test
@@ -99,12 +108,13 @@ class AuthenticationServiceTest {
         Client client = client("owner@example.com", Role.EDITOR);
         client.setId(1L);
 
+        when(authenticationManager.authenticate(any())).thenReturn(null);
         when(clientRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(client));
         when(jwtService.generateAccessToken(client)).thenReturn("access");
         when(jwtService.generateRefreshToken(client)).thenReturn("refresh");
         when(tokenRepository.findAllValidTokenClient(1L)).thenReturn(List.of(Token.builder().id(1L).build()));
 
-        AuthenticationResponse response = authenticationService.authenticate(request, "EDITOR");
+        AuthenticationResponse response = authenticationService.authenticate(request);
 
         assertEquals("access", response.getAccessToken());
         assertEquals("refresh", response.getRefreshToken());
